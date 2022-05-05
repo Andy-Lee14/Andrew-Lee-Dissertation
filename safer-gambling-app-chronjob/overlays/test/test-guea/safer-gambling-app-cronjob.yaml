@@ -1,0 +1,14 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: safer-gambling-app
+spec:
+  schedule: '*/1 * * * *' # At every minute.
+  jobTemplate:
+    spec:
+      template:
+        spec:
+         initContainers:
+         containers:
+           - name: safer-gambling-app
+             imagePullPolicy: Always

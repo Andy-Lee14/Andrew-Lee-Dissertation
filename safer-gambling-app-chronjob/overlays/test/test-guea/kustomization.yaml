@@ -1,0 +1,24 @@
+namespace: core-ngp-cc-test
+
+commonLabels:
+  environment: test
+
+bases:
+  - ../../../base
+
+resources:
+  - safer-gambling-app-egress-policy.yaml
+
+patchesStrategicMerge:
+  - safer-gambling-app-cronjob.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: safer-gambling-app
+    behavior: merge
+    literals:
+      - LOGGING_ENVIRONMENT="test"
+      - SLACK_MESSAGE_PROXY_HOST="miscsquid.test.bet.skybet.net"
+      - SLACK_MESSAGE_PROXY_PORT="80"

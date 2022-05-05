@@ -1,0 +1,18 @@
+#Network policies are Kubernetes resources that allows to control the traffic between pods and/or network endpoints.
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: safer-gambling-app-allow-prometheus-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app: safer-gambling-app
+  ingress:
+  - from:
+    - namespaceSelector: {}
+    - podSelector:
+        matchLabels:
+          prometheus: cs-promos
+  policyTypes:
+  - Ingress
