@@ -1,0 +1,14 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: safer-gambling-app-promos-monitor
+  labels:
+    team: ngp
+    prometheus: cs-promos # The global in cluster prometheus instance requires this key to be set.
+spec:
+  selector:
+    matchLabels:
+      app: safer-gambling-app
+  endpoints:
+  - port: metrics

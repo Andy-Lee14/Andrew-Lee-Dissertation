@@ -1,0 +1,25 @@
+namespace: core-ngp-cc-local
+
+commonLabels:
+  environment: local
+
+bases:
+  - ../../base
+
+resources:
+  - safer-gambling-app-namespace.yaml
+
+patchesStrategicMerge:
+  - safer-gambling-app-cronjob.yaml
+
+secretGenerator:
+  - name: safer-gambling-app-secrets
+    literals:
+    - KEYSTORE_PASSWORD=password
+
+
+configMapGenerator:
+  - name: safer-gambling-app
+    behavior: merge
+    literals:
+      - LOGGING_ENVIRONMENT="local"

@@ -1,0 +1,17 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: safer-gambling-app
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+         volumes:
+           - name: vault-keystore
+             hostPath:
+               path: "/private/tmp/certs/"
+               type: DirectoryOrCreate
+         containers:
+           - name: safer-gambling-app
+             imagePullPolicy: Always

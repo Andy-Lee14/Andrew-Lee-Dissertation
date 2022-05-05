@@ -1,0 +1,15 @@
+---
+startDelaySeconds: 0
+hostPort: 0.0.0.0:9999
+username:
+password:
+ssl: false
+lowercaseOutputName: true
+lowercaseOutputLabelNames: false
+whitelistObjectNames: ["com.skybet.gaming.ngp:*", "kafka.consumer:*", "kafka.streams:*"]
+rules:
+  - pattern: 'com.skybet.gaming.ngp.*'
+  - pattern: 'kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(heartbeat-rate|assigned-partitions): (.+)'
+  - pattern: 'kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(records-consumed-rate|records-consumed-total): (.+)'
+  - pattern: 'kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(records-lag): (.+)'
+  - pattern: 'kafka.streams<type=stream-metrics, client-id=(.+)><>(task-created-total): (.+)'

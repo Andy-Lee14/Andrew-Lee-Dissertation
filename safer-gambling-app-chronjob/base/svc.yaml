@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: safer-gambling-app
+  labels:
+    app: safer-gambling-app
+spec:
+  selector:
+    app: safer-gambling-app
+  ports:
+  - name: metrics
+    port: 8088

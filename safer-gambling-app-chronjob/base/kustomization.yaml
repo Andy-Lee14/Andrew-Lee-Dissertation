@@ -1,0 +1,20 @@
+#Kustomize is a configuration management solution that leverages layering to preserve the base settings of your applications and components by overlaying
+#declarative yaml artifacts (called patches) that selectively override default settings without actually changing the original files.
+resources:
+  - safer-gambling-app-cronjob.yaml
+  - safer-gambling-app-egress-policy.yaml
+  - safer-gambling-app-service-account.yaml
+  - svc.yaml
+  - servicemonitor.yaml
+  - prometheus-network-policy.yaml
+  - prometheus-service-account.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+#ConfigMaps is the kubernetes way to inject application pods with configuration data. ConfigMaps allow you to decouple configuration artifacts from image content to keep containerized applications portable.
+#define a literal value from the command line
+configMapGenerator:
+  - name: safer-gambling-app
+    literals:
+      - LOG_LEVEL="info"

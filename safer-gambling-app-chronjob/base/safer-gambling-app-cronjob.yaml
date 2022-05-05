@@ -1,0 +1,36 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: safer-gambling-app
+spec:
+  concurrencyPolicy: Forbid
+  schedule: '*/1 * * * *' # At every minute.
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: safer-gambling-app
+            squad: ngp
+        spec:
+         serviceAccount: core-ngp-cc-safer-gambling-app-sa
+         restartPolicy: OnFailure
+         containers:
+           - name: safer-gambling-app
+             image: docker.artifactory.euw.platformservices.io/sbg-next-gen-promotions/safer-gambling-app:test-branch
+             resources:
+               requests:
+                 memory: 256Mi
+                 cpu: 0.1
+               limits:
+                 memory: 1512Mi
+                 cpu: 1.0
+             envFrom:
+               - configMapRef:
+                   name: safer-gambling-app
+             readinessProbe:
+               exec:
+                 command:
+                   - ls
+               initialDelaySeconds: 5
+               periodSeconds: 5

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <!-- Json console appender -->
+    <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        </encoder>
+    </appender>
+
+    <appender name="jsonAsync" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="jsonConsoleAppender"/>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>${ASYNC_QUEUE_SIZE:-1024}</queueSize>
+    </appender>
+
+    <!-- Vanilla console appender -->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-4relative [%thread] %-5level %logger{35} - %replace(%msg){'\"', '\''} %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="consoleAsync" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="consoleAppender"/>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>${ASYNC_QUEUE_SIZE:-1024}</queueSize>
+    </appender>
+
+    <!-- Conditional use of appender based on execution environment -->
+    <root level="${LOG_LEVEL}">
+        <if condition='isDefined("LOGGING_ENVIRONMENT")'>
+            <then>
+                <if condition='"${LOGGING_ENVIRONMENT}" == "local"'>
+                    <then>
+                        <appender-ref ref="consoleAsync"/>
+                    </then>
+                    <else>
+                        <appender-ref ref="jsonAsync"/>
+                    </else>
+                </if>
+            </then>
+            <else>
+                <appender-ref ref="consoleAsync"/>
+            </else>
+        </if>
+    </root>
+</configuration>

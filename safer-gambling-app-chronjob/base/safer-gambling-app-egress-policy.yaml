@@ -1,0 +1,21 @@
+#When a pod is isolated for egress, the only allowed connections from the pod are those allowed by the egress list
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: safer-gambling-app-to-slack
+spec:
+  egress:
+    - ports:
+        - port: 443
+          protocol: TCP
+      to:
+        - ipBlock:
+            cidr: 18.169.61.189/32
+  podSelector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - safer-gambling-app
+  policyTypes:
+    - Egress
